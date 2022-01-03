@@ -4,7 +4,7 @@ from os.path import basename, splitext
 import tkinter as tk
 from tkinter import Label, Button, Scale, Canvas
 
-from tkinter import HORIZONTAL, LEFT, Frame, Entry, Canvas, S, StringVar
+from tkinter import HORIZONTAL, LEFT, Frame, Entry, Canvas, S, StringVar, IntVar
 #dominik slehofer
 # from tkinter import ttk
 
@@ -21,13 +21,13 @@ class Application(tk.Tk):
 
 
 #red
-        self.varR = StringVar()
-        self.varR.trace("w",self.change)
+        self.varR = IntVar()
+       
         self.frameR= Frame(self)
-        self.frameR.pack()
+        self.frameR.pack()#umístí do hlavního okna
         self.lblR = tk.Label(self.frameR, text="R")
         self.lblR.pack(side=LEFT, anchor=S)
-        self.scaleR = Scale(self.frameR, from_=0, to=255, orient=HORIZONTAL, length=256,variable=self.varR, command=self.change)
+        self.scaleR = Scale(self.frameR, from_=0, to=255, orient=HORIZONTAL, length=256,variable=self.varR)
         self.scaleR.pack()
 
         self.scaleR.pack(side=LEFT, anchor=S)
@@ -40,16 +40,17 @@ class Application(tk.Tk):
 
 
 #grn
-        self.varG = StringVar()
+        self.varG = IntVar()
+       
         self.frameG= Frame(self)
         self.frameG.pack()
         self.lblG = tk.Label(self.frameG, text="G")
         self.lblG.pack(side=LEFT, anchor=S)
-        self.scaleG = Scale(self.frameG, from_=0, to=255, orient=HORIZONTAL, length=256, variable=self.varG, command=self.change)
+        self.scaleG = Scale(self.frameG, from_=0, to=255, orient=HORIZONTAL, length=256, variable=self.varG)
         self.scaleG.pack()
 
         self.scaleG.pack(side=LEFT, anchor=S)
-        #self.varG = StringVar()
+        
         self.entryG = Entry(self.frameG, width=5, textvariable=self.varG)
         self.entryG.pack(side=LEFT, anchor=S)
 
@@ -61,12 +62,13 @@ class Application(tk.Tk):
 #blue
 
 
-        self.varB=StringVar()
+        self.varB=IntVar()
+       
         self.frameB= Frame(self)
         self.frameB.pack()
         self.lblB = tk.Label(self.frameB, text="B")
         self.lblB.pack(side=LEFT, anchor=S)
-        self.scaleB = Scale(self.frameB, from_=0, to=255, orient=HORIZONTAL, length=256, variable=self.varB, command=self.change)
+        self.scaleB = Scale(self.frameB, from_=0, to=255, orient=HORIZONTAL, length=256, variable=self.varB)
         self.scaleB.pack()
 
         self.scaleB.pack(side=LEFT, anchor=S)
@@ -78,6 +80,10 @@ class Application(tk.Tk):
         self.canvasMain=Canvas(width=256, height=100, background="#000000")
         self.canvasMain.pack()
 
+        self.varMain=StringVar()
+        self.entryMain = Entry(self, textvariable=self.varMain, state="readonly", readonlybackground="#f3f3f3",)
+        self.entryMain.pack()
+
 
         self.btn = tk.Button(self, text="Quit", command=self.quit)
         self.btn.pack()
@@ -86,24 +92,29 @@ class Application(tk.Tk):
         self.btn2.pack()
 
 
+        self.varR.trace("w", self.change)
+        self.varG.trace("w", self.change)
+        self.varB.trace("w", self.change)
 
 
-    def change(self, event):
+
+
+
+
+
+
+    def change(self, var, index, mode):
         #self.lblG.config(text="ahoj")
 
-        r = self.scaleR.get()
-        g = self.scaleG.get()
-        b = self.scaleB.get()
+        r = self.varR.get()
+        g = self.varG.get()
+        b = self.varB.get()
 
         color=f"#{r:02x}{g:02x}{b:02x}"
 
         self.canvasMain.config(background=color)#0 před 2 říká:vyplň prázdné místo nulami, 
-        print(color)
-
-        self.varR.set(r)
-        self.varG.set(g)
-        self.varB.set(b)
-
+        self.varMain.set(color)
+      
 
 
     def quit(self, event=None):
