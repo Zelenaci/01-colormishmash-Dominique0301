@@ -77,9 +77,14 @@ class Application(tk.Tk):
 
 
 
+
+
+
         self.canvasMain=Canvas(width=256, height=100, background="#000000")
         self.canvasMain.pack()
+        self.canvasMain
 
+        #okno pro výpis barvy
         self.varMain=StringVar()
         self.entryMain = Entry(self, textvariable=self.varMain, state="readonly", readonlybackground="#f3f3f3",)
         self.entryMain.pack()
@@ -95,6 +100,17 @@ class Application(tk.Tk):
         self.varR.trace("w", self.change)
         self.varG.trace("w", self.change)
         self.varB.trace("w", self.change)
+
+        #malé okna
+        self.frameMem=Frame(self)
+        self.frameMem.pack()
+        for row in range(3):
+                for column in range(7):
+                        canvas = Canvas(self.frameMem, width=50, height=50, background="#000000")
+                
+                        canvas.grid(row=row, column=column)
+                        canvas.bind("<Button-1>", self.mousehandler)
+
 
 
 
@@ -119,6 +135,18 @@ class Application(tk.Tk):
 
     def quit(self, event=None):
         super().quit()
+
+
+    def mousehandler(self, event):
+        if self.cget("cursor") != "pencil":
+                self.config(cursor="pencil")
+                self.clr = event.widget.cget("background")
+        elif self.cget("cursor") == "pencil":
+                self.config(cursor="")
+                event.widget.config(background=self.clr)
+        
+
+
 
 
 app = Application()
