@@ -4,9 +4,10 @@ from os.path import basename, splitext
 import tkinter as tk
 from tkinter import Label, Button, Scale, Canvas
 
-from tkinter import HORIZONTAL, LEFT, Frame, Entry, Canvas, S, StringVar, IntVar
+from tkinter import HORIZONTAL, LEFT, Frame, Entry, Canvas, S, StringVar, IntVar, filedialog
 #dominik slehofer
 # from tkinter import ttk
+
 
 class Application(tk.Tk):
     name = basename(splitext(basename(__file__.capitalize()))[0])
@@ -82,7 +83,9 @@ class Application(tk.Tk):
 
         self.canvasMain=Canvas(width=256, height=100, background="#000000")
         self.canvasMain.pack()
-        self.canvasMain
+        self.canvasMain.bind("<Button-1>", self.mousehandler)
+        self.entryMain = Entry(self,)
+        self.entryMain.pack()
 
         #okno pro výpis barvy
         self.varMain=StringVar()
@@ -110,6 +113,8 @@ class Application(tk.Tk):
                 
                         canvas.grid(row=row, column=column)
                         canvas.bind("<Button-1>", self.mousehandler)
+                        
+
 
 
 
@@ -144,7 +149,8 @@ class Application(tk.Tk):
         elif self.cget("cursor") == "pencil":
                 self.config(cursor="")
                 event.widget.config(background=self.clr)
-        
+
+
 
 
 
